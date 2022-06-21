@@ -1,26 +1,47 @@
-import { useState } from 'react';
-import { View } from 'react-native';
-import { RACES } from '../shared/races';
 import RaceInfoScreen from './RaceInfoScreen';
 import DirectoryScreen from './DirectoryScreen';
+import { Platform, View } from 'react-native';
+import Constants from 'expo-constants';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const DirectoryNavigator = () => {
+    const Stack = createStackNavigator();
+    return (
+        <Stack.Navigator
+            initialRouteName='Directory'
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#000000'
+                },
+                headerTintColor: '#fff'
+            }}
+        >
+            <Stack.Screen
+                name='Directory'
+                component={DirectoryScreen}
+                options={{ title: 'Race Directory' }}
+            />
+            <Stack.Screen
+                name='RaceInfo'
+                component={RaceInfoScreen}
+                options={({ route }) => ({
+                    title: route.params.race.name
+                })}
+            />
+        </Stack.Navigator>
+    );
+};
 
 const Main = () => {
-    const [races, setRaces] = useState(RACES);
-    const [selectedRaceId, setSelectedRaceId] = useState();
-
     return (
-        <View style={{ flex: 1 }}>
-            <DirectoryScreen
-                races={races}
-                onPress={(raceId) => setSelectedRaceId(raceId)}
-            />
-            <RaceInfoScreen
-                race={
-                    races.filter(
-                        (race) => race.id === selectedRaceId
-                    )[0]
-                }
-            />
+        <View
+            style={{
+                flex: 1,
+                paddingTop:
+                    Platform.OS === 'ios' ? 0 : Constants.statusBarHeight
+            }}
+        >
+            <DirectoryNavigator />
         </View>
     );
 };

@@ -1,10 +1,18 @@
-import { FlatList, Text } from 'react-native';
+import { useState } from 'react';
+import { FlatList } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
+import { RACES } from '../shared/races';
 
-const DirectoryScreen = (props) => {
+const DirectoryScreen = ({ navigation }) => {
+    const [races, setRaces] = useState(RACES);
+
     const renderDirectoryItem = ({ item: race }) => {
         return (
-            <ListItem onPress={() => props.onPress(race.id)}>
+            <ListItem
+                onPress={() =>
+                    navigation.navigate('RaceInfo', { race })
+                }
+            >
                 <Avatar source={race.image} rounded />
                 <ListItem.Content>
                     <ListItem.Title>{race.name}</ListItem.Title>
@@ -17,7 +25,7 @@ const DirectoryScreen = (props) => {
     };
     return (
         <FlatList
-            data={props.races}
+            data={races}
             renderItem={renderDirectoryItem}
             keyExtractor={(item) => item.id.toString()}
         />

@@ -1,7 +1,8 @@
 import RenderRace from '../features/races/RenderRace';
 
-const RaceInfoScreen = (props) => {
-    return <RenderRace race={props.race} />;
+const RaceInfoScreen = ({ route }) => {
+    const { race } = route.params;
+    return <RenderRace race={race} />;
 };
 
 export default RaceInfoScreen;
